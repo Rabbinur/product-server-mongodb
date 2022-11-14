@@ -36,6 +36,17 @@ async function run() {
     // const result = await userCollection.insertOne(user);
     // console.log(result);
 
+    /*------------ 
+   to find multiple user 
+   for access client side
+   to show ui interface 
+   */
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find({});
+      const users = await cursor.toArray();
+      res.send(users);
+    });
+
     //to store data into mongodb from client side
     app.post("/users", async (req, res) => {
       const user = req.body;
@@ -51,7 +62,7 @@ async function run() {
 run().catch((err) => console.log(err));
 
 //
-//
+/*
 
 // for client side node server create a object
 const users = [
@@ -71,7 +82,7 @@ const users = [
     email: "rabbinur852345@gmail.com",
   },
 ];
-
+*/
 //for sending the user interface showing
 // app.get("/users", (req, res) => {
 //   // for query by user for searching
