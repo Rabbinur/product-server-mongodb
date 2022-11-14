@@ -50,11 +50,12 @@ async function run() {
     //to store data into mongodb from client side
     app.post("/users", async (req, res) => {
       const user = req.body;
+      console.log(user);
       // users.push(user);
       const result = await userCollection.insertOne(user); //set asynnc to arrow funtoin
       console.log(result);
-      user._id = result.insertedId;
-      res.send(user);
+      // user._id = result.insertedId;
+      res.send(result);
     });
   } finally {
   }
