@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const cors = require("cors");
 const { json } = require("express");
@@ -41,12 +41,16 @@ async function run() {
    for access client side
    to show ui interface 
    */
+    //crud- Read
+    //data read get api create
     app.get("/users", async (req, res) => {
-      const cursor = userCollection.find({});
+      const query = {};
+      const cursor = userCollection.find(query);
       const users = await cursor.toArray();
       res.send(users);
     });
 
+    //crud -Create
     //to store data into mongodb from client side
     app.post("/users", async (req, res) => {
       const user = req.body;
@@ -55,6 +59,18 @@ async function run() {
       const result = await userCollection.insertOne(user); //set asynnc to arrow funtoin
       console.log(result);
       // user._id = result.insertedId;
+      res.send(result);
+    });
+    //crud-delete
+    //to delete data
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      //create a query for delete speciofic id
+      const query = { _id: ObjectId(id) }; //mondb   _id
+      console.log("trying to delete", id);
+      //for delete
+      const result = await userCollection.deleteOne(query);
+      console.log(result);
       res.send(result);
     });
   } finally {
@@ -66,7 +82,7 @@ run().catch((err) => console.log(err));
 /*
 
 // for client side node server create a object
-const users = [
+const users =  [
   {
     id: 1,
     name: "Rabbinur",
