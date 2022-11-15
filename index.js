@@ -69,6 +69,31 @@ async function run() {
       // user._id = result.insertedId;
       res.send(result);
     });
+    app.put("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const user = req.body;
+      const option = { upsert: true }; // user thakle update korbe nah thakle insert kore dibe
+      //update property
+      const updatedUser = {
+        $set: {
+          name: user.name,
+          address: user.address,
+          email: user.email,
+          picture: user.picture,
+          price: user.price,
+          quantity: user.quantity,
+        },
+      };
+      // update
+      const result = await userCollection.updateOne(
+        filter,
+        updatedUser,
+        option
+      );
+      res.send(result);
+      console.log(user);
+    });
     //crud-delete
     //to delete data
     app.delete("/users/:id", async (req, res) => {
